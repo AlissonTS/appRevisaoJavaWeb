@@ -36,36 +36,51 @@ public class ServletController extends HttpServlet {
 		
 		// System.out.println("Chamou servlet controller");
 		
-		String login = request.getParameter("login");
-		String senha = request.getParameter("senha");
-		
-		Usuario u = new Usuario();
-		u.setLogin(login);
-		u.setSenha(senha);
-		
-		UsuarioDao uD = new UsuarioDao();
+		String opcao = request.getParameter("opcao");
 		RequestDispatcher dispatcher;
 		
-		try{
-			boolean retorno = uD.autenticado(u);
-			if(retorno){
-				String pagina = "/principal.jsp";
-				dispatcher = getServletContext().getRequestDispatcher(pagina);
-				dispatcher.forward(request, response);
-			}else{
+		if(opcao.equals("logar")){
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			
+			Usuario u = new Usuario();
+			u.setLogin(login);
+			u.setSenha(senha);
+			
+			UsuarioDao uD = new UsuarioDao();
+			
+			try{
+				boolean retorno = uD.autenticado(u);
+				if(retorno){
+					String pagina = "/WEB-INF/jsp/principal.jsp";
+					request.setAttribute("usuario", u);
+					dispatcher = getServletContext().getRequestDispatcher(pagina);
+					dispatcher.forward(request, response);
+				}else{
+					String pagina = "/index.jsp";
+					request.setAttribute("msg", "Erro ao logar! ");
+					dispatcher = getServletContext().getRequestDispatcher(pagina);
+					dispatcher.forward(request, response);
+				}
+				
+			}catch(SQLException e){
+				e.printStackTrace();
+				
 				String pagina = "/index.jsp";
 				dispatcher = getServletContext().getRequestDispatcher(pagina);
 				dispatcher.forward(request, response);
 			}
-			
-		}catch(SQLException e){
-			e.printStackTrace();
-			
-			String pagina = "/index.jsp";
+		}
+		else if(opcao.equals("paginaCadastro")){
+			String pagina = "/WEB-INF/jsp/cadastroUsuario.jsp";
 			dispatcher = getServletContext().getRequestDispatcher(pagina);
 			dispatcher.forward(request, response);
 		}
-		
+		else if(opcao.equals("cadastroUsuario")){
+			String pagina = "/WEB-INF/jsp/cadastroUsuario.jsp";
+			dispatcher = getServletContext().getRequestDispatcher(pagina);
+			dispatcher.forward(request, response);
+		}
 	}
 
 	/**

@@ -7,6 +7,10 @@
 		<title>PRINCIPAL</title>
 	</head>
 	<body>
-		<h1>USUARIO AUTENTICADO</h1>
+		<h1>${usuario.login}  - USUARIO AUTENTICADO!</h1>
+		
+		<a href="ServletController?opcao=paginaCadastro">Cadastrar Usuário</a> 
+		
+		
 	</body>
 </html>

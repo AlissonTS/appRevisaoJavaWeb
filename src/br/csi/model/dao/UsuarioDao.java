@@ -1,5 +1,6 @@
 package br.csi.model.dao;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -38,10 +39,18 @@ public class UsuarioDao {
 		boolean autenticado = false;
 		
 		Connection c  = ConectaBDPostgres.getConexao();
-		Statement stmt = c.createStatement();
-		String sql = "select * from usuario where login = '"+u.getLogin()+"' and senha='"+u.getSenha()+"';";
+		// Statement stmt = c.createStatement();
+		// String sql = "select * from usuario where login = '"+u.getLogin()+"' and senha='"+u.getSenha()+"';";
 		
-		ResultSet rs = stmt.executeQuery(sql);
+		String sql = "select * from usuario where login=? and senha=?";
+		PreparedStatement stmtPre = c.prepareStatement(sql);
+		
+		stmtPre.setString(1, u.getLogin());
+		stmtPre.setString(2, u.getSenha());
+		
+		// ResultSet rs = stmt.executeQuery(sql);
+		
+		ResultSet rs = stmtPre.executeQuery();
 		
 		while(rs.next()){
 			long id = rs.getLong("id");
