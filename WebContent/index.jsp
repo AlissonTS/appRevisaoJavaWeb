@@ -11,7 +11,7 @@
 	</head>
 	<body>
 	
-		<form action="ServletController" method="post">
+		<form action="/appRevisaoJavaWeb/mvc?logica=LogarLogica" method="post">
 			<label for="login">Login: </label>
 			<input type="text" id="Login" name="login" /> <br/>
 			<label for="senha">Senha: </label>

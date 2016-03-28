@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Cadastrar Usuario</title>
+		<title>Cadastrar Usuário</title>
 	</head>
 	<body>
 		<h1>Cadastro de Usuário: </h1>
