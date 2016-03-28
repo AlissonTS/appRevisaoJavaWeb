@@ -41,7 +41,7 @@ public class ServletMVC extends HttpServlet {
 			String fluxo = logLogica.executa(request, response);
 			
 			request.getRequestDispatcher(fluxo).forward(request, response);	
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
