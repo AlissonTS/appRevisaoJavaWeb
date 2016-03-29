@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<h1>Cadastro de Usuário: </h1>
-		<form action="ServletController" method="post">
+		<form action="/appRevisaoJavaWeb/mvc?logica=CriarUsuario" method="post">
 			<label for="login">Login: </label>
 			<input type="text" id="Login" name="login" /> <br/>
 			<label for="senha">Senha: </label>
