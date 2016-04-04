@@ -20,7 +20,7 @@
 		</form>
 		
 		<c:if test="${not empty msg }">
-			<h2>Usuário com login ou senha inválidos</h2>
+			<h2>${msg}</h2>
 		</c:if>
 		
 	</body>

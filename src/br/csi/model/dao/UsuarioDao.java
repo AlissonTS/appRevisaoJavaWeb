@@ -2,6 +2,8 @@ package br.csi.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
@@ -13,8 +15,16 @@ create table usuario(
 	id serial,
 	login varchar(10) not null,
 	senha varchar(10) not null,
-	primary key(id)
+	primary key(id, login)
 )
+
+create table usuario(
+	id serial,
+	login varchar(10) not null,
+	senha varchar(10) not null,
+	primary key(login)
+)
+
 */
 
 
@@ -63,5 +73,50 @@ public class UsuarioDao {
 		return autenticado;
 	}
 	
+	public boolean inserirUsuario(Usuario u) throws SQLException{
+		
+		Connection c  = ConectaBDPostgres.getConexao();
+		PreparedStatement stmtPre = null;
+		boolean retorno = false;
+		
+		try {
+			String sql = "insert into usuario(login, senha) values(?, ?);";
+			stmtPre = c.prepareStatement(sql);	
+			
+			stmtPre.setString(1, u.getLogin());
+			stmtPre.setString(2, u.getSenha());
+			
+			stmtPre.execute();			
+			stmtPre.close();
+			retorno = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return retorno;
+		}
+		
+		return retorno;
+	}
 	
+	public List<Usuario> getUsuarios(){
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+		System.out.println("dentro do getUsuarios()");
+		try{
+				
+			PreparedStatement stmt =  ConectaBDPostgres.getConexao().prepareStatement("select * from USUARIO");
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				Usuario t = new Usuario();
+				t.setId(rs.getLong("id"));
+				t.setLogin(rs.getString("login"));
+				t.setSenha(rs.getString("senha"));
+				System.out.println("usuário: "+t.getLogin());
+				usuarios.add(t);
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return usuarios;
+	}
 }
