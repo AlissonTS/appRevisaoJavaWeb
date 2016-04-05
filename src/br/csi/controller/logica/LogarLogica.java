@@ -28,6 +28,7 @@ public class LogarLogica implements Logica{
 		try {
 			boolean retorno =  uD.autenticado(u);
 			if(retorno){
+				rq.getSession().setAttribute("usuarioLogado", u);
 				pagina = "/WEB-INF/jsp/principal.jsp";
 				rq.setAttribute("usuario", u);
 				rq.setAttribute("usuarios", uD.getUsuarios());

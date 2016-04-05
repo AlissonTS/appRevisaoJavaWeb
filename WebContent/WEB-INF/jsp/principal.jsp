@@ -12,7 +12,7 @@
 	<body>
 		<h1 style="font-size: 20px">${usuario.login}  - Usuário Autenticado!</h1>
 		
-		<a href="ServletController?opcao=paginaCadastro">Cadastrar Usuário</a> 
+		<a href="/appRevisaoJavaWeb/mvc?logica=RedirecionaCadastraUsuarioLogica">Cadastrar Usuário</a> 
 		
 	</body>
 </html>
