@@ -14,19 +14,27 @@ public class CriarUsuario implements Logica{
 		
 		String login = rq.getParameter("login");
 		String senha = rq.getParameter("senha");
+		String id = rq.getParameter("id");
+		System.out.println("id ..."+id);
 		
 		Usuario u = new Usuario();
 		u.setLogin(login);
 		u.setSenha(senha);
+		if(id == null){
+			System.out.println("novo usuario");
+		}else{
+			u.setId(Long.parseLong(id));
+		}
 		
 		UsuarioDao uD = new UsuarioDao();
 		
-		String pagina = "/WEB-INF/jsp/cadastroUsuario.jsp";
+		String pagina = "/index.jsp";
 		
 		try {
 			boolean retorno =  uD.inserirUsuario(u);
 			if(retorno){
-				rq.setAttribute("msg", "Usuário "+u.getLogin()+" inserido com Sucesso!");
+				pagina = "/WEB-INF/jsp/cadastroUsuario.jsp";
+				rq.setAttribute("usuarios", uD.getUsuarios());
 			}else{
 				rq.setAttribute("msg", "Problemas ao Inserir Usuário");
 			}

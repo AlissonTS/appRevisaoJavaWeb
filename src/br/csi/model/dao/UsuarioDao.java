@@ -75,34 +75,58 @@ public class UsuarioDao {
 	
 	public boolean inserirUsuario(Usuario u) throws SQLException{
 		
-		Connection c  = ConectaBDPostgres.getConexao();
-		PreparedStatement stmtPre = null;
+		Connection c = null;
+		PreparedStatement stmt = null;
 		boolean retorno = false;
-		
 		try {
-			String sql = "insert into usuario(login, senha) values(?, ?);";
-			stmtPre = c.prepareStatement(sql);	
+
+			c = ConectaBDPostgres.getConexao();
+			String sql = "";
 			
-			stmtPre.setString(1, u.getLogin());
-			stmtPre.setString(2, u.getSenha());
+			if(u.getId()<= 0){
+				System.out.println("......... vai adicionar .............");
+				
+				sql = "INSERT INTO USUARIO (LOGIN, SENHA) "
+						+ " values (?,?)";
+				stmt = c.prepareStatement(sql);	
+				stmt.setString(1, u.getLogin());
+				stmt.setString(2, u.getSenha());
+				
+				
+			}else{
+				System.out.println("......... vai alterar .............");
+				sql = "UPDATE USUARIO SET LOGIN =?, SENHA=?  "
+						+ " WHERE id =?";
+				stmt = c.prepareStatement(sql);								
+				stmt.setString(1, u.getLogin());
+				stmt.setString(2, u.getSenha());
+				stmt.setLong(3, u.getId());
+				
+			}
 			
-			stmtPre.execute();			
-			stmtPre.close();
+					
+								
+			stmt.execute();			
+			stmt.close();
 			retorno = true;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return retorno;
-		}
-		
+			
+		}	
 		return retorno;
 	}
+	
 	
 	public List<Usuario> getUsuarios(){
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		System.out.println("dentro do getUsuarios()");
 		try{
 				
-			PreparedStatement stmt =  ConectaBDPostgres.getConexao().prepareStatement("select * from USUARIO");
+			PreparedStatement stmt =  
+					ConectaBDPostgres.getConexao().prepareStatement("select * from USUARIO");
+			
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
 				Usuario t = new Usuario();
@@ -118,5 +142,53 @@ public class UsuarioDao {
 		}
 		
 		return usuarios;
+	}
+	
+	public Usuario getUsuario(Long id){
+		Usuario u = new Usuario();
+		
+		try{
+			
+			PreparedStatement stmt =  
+					ConectaBDPostgres
+						.getConexao()
+							.prepareStatement("select * from USUARIO where id = ?");
+			stmt.setLong(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){				
+				u.setId(rs.getLong("id"));
+				u.setLogin(rs.getString("login"));
+				u.setSenha(rs.getString("senha"));
+				System.out.println("usuário: "+u.getLogin());
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return u;
+	}
+	
+	
+	public boolean remover(Long id){
+		boolean retorno = false;
+		
+		String sql = "delete from USUARIO where id = ?";
+		Connection c = ConectaBDPostgres
+				.getConexao();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = c.prepareStatement(sql);
+			stmt.setLong(1, id);
+			stmt.execute();
+			retorno = true;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return retorno;
 	}
 }

@@ -30,6 +30,7 @@ public class LogarLogica implements Logica{
 			if(retorno){
 				pagina = "/WEB-INF/jsp/principal.jsp";
 				rq.setAttribute("usuario", u);
+				rq.setAttribute("usuarios", uD.getUsuarios());
 				
 			}else{
 				rq.setAttribute("msg", "Problemas ao logar");
